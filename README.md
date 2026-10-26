@@ -39,3 +39,7 @@ Automatic HydrometCloud gauge ingestion (no verified API endpoint), persistent p
 - **River height:** The Comber (DfI Rivers) water-level sensor is at 54.554632, -5.745349, logger ID 0000205020, 15-minute interval, unit m. Press View current gauge reading to open HydrometCloud, select Comber, then copy the reading and its measurement time into the app. The screenshot's 0.614 m at 2026-10-26 16:30 is historical and is deliberately NOT prefilled. The source is stored as manual. No automated HydrometCloud ingestion is claimed because a supported machine-readable API has not been verified.
 - **Deploy:** Unzip and upload the *contents* of `riverfly_app` to the root of your GitHub repo. Netlify should detect `netlify.toml`; publish directory `.` and functions `netlify/functions`. The online AI function still needs `OPENAI_API_KEY` configured privately in Netlify.
 - **Privacy:** GPS is only used in the browser and sent to Open-Meteo when you press Import local weather; weather requests include coordinates. Browser records are local to each phone.
+
+
+## Version 5 map stability fix
+The map uses a fixed-size OpenStreetMap embedded frame instead of Leaflet tiles. This prevents floating/misaligned tiles when the Leaflet stylesheet is blocked or unavailable. The map requires internet; GPS capture and saving coordinates work offline. After deploying, close and reopen the installed app or reload it twice to clear the previous service worker cache.
