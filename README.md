@@ -1,6 +1,6 @@
-# Riverfly Field Recorder v3 — iPhone + Android
+# Riverfly Field Recorder v4 — iPhone + Android
 
-This is an installable web app (PWA) using the eight taxa, abundance scores, and site trigger fields from the supplied Riverfly Partnership RMI form. It provides offline field recording, manual weather observations, GPS, local visit storage, photo previews, CSV/JSON export and **online AI photo suggestions** through a Netlify serverless function.
+This is an installable web app (PWA) using the eight taxa, abundance scores, and site trigger fields from the supplied Riverfly Partnership RMI form. It provides offline field recording, automatic Open-Meteo weather (online), manual weather fallback, interactive OpenStreetMap GPS map (tiles online), Comber HydrometCloud gauge reference and manual timestamped gauge entry, GPS, local visit storage, photo previews, CSV/JSON export and **online AI photo suggestions** through a Netlify serverless function.
 
 ## Publish on Netlify
 
@@ -30,4 +30,12 @@ The form has eight groups: cased caddisfly; caseless caddisfly; mayfly (Ephemeri
 
 ## Known gaps before production use
 
-Automatic weather lookup, persistent photo storage, cross-device synchronization, secure account sign-in, offline AI, validation of AI accuracy against representative RMI images, and operational protections such as authentication/rate limiting are not yet included. This is a functional pilot, not a validated scientific identification system.
+Automatic HydrometCloud gauge ingestion (no verified API endpoint), persistent photo storage, cross-device synchronization, secure account sign-in, offline AI, validation of AI accuracy against representative RMI images, and operational protections such as authentication/rate limiting are not yet included. This is a functional pilot, not a validated scientific identification system.
+
+## Version 4: map, weather, Enler gauge
+
+- **GPS map:** Click Get GPS, grant permission, and the marker follows the sampling coordinates. Leaflet/OpenStreetMap tiles require internet; offline GPS coordinate capture still works. The map script is CDN-hosted, so the map itself may be unavailable offline.
+- **Local weather:** After GPS, press Import local weather. This uses Open-Meteo current model conditions (not a calibrated local station), filling temperature and weather and recording timestamp, precipitation, cloud, wind, humidity in `weather_meta` for JSON export; CSV includes source and time. You can edit temperature/weather manually. Requires internet.
+- **River height:** The Comber (DfI Rivers) water-level sensor is at 54.554632, -5.745349, logger ID 0000205020, 15-minute interval, unit m. Press View current gauge reading to open HydrometCloud, select Comber, then copy the reading and its measurement time into the app. The screenshot's 0.614 m at 2026-10-26 16:30 is historical and is deliberately NOT prefilled. The source is stored as manual. No automated HydrometCloud ingestion is claimed because a supported machine-readable API has not been verified.
+- **Deploy:** Unzip and upload the *contents* of `riverfly_app` to the root of your GitHub repo. Netlify should detect `netlify.toml`; publish directory `.` and functions `netlify/functions`. The online AI function still needs `OPENAI_API_KEY` configured privately in Netlify.
+- **Privacy:** GPS is only used in the browser and sent to Open-Meteo when you press Import local weather; weather requests include coordinates. Browser records are local to each phone.
